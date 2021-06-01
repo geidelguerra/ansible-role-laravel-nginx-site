@@ -1,0 +1,27 @@
+---
+# tasks file for laravel_nginx_site
+- name: Copy site conf file
+  ansible.builtin.template:
+    src: site.conf.j2
+    dest: "/etc/nginx/sites-available/{{ site_domain}}.conf"
+    mode: 0644
+  when: site_enabled
+  notify:
+    - Reload nginx
+
+- name: Enable site
+  ansible.builtin.file:
+    src: "/etc/nginx/sites-available/{{ site_domain }}.conf"
+    path: "/etc/nginx/sites-enabled/{{ site_domain }}.conf"
+    state: link
+  notify:
+    - Reload nginx
+  when: site_enabled
+
+- name: Disable site
+  ansible.builtin.file:
+    path: "/etc/nginx/sites-enabled/{{ site_domain }}.conf"
+    state: absent
+  notify:
+    - Reload nginx
+  when: not site_enabled

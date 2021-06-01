@@ -1,0 +1,42 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: 'Include nginx'
+      include_tasks: '../../../ansible-role-nginx/tasks/main.yml'
+
+    - name: Create ssl certificate directory
+      ansible.builtin.file:
+        path: /etc/nginx/ssl/example.com
+        state: directory
+        mode: 0644
+
+    - name: Copy dummy certificate file
+      ansible.builtin.copy:
+        src: ../../files/dummy_certificate.crt
+        dest: /etc/nginx/ssl/example.com/server.crt
+        mode: 0644
+
+    - name: Copy dummy certificate key file
+      ansible.builtin.copy:
+        src: ../../files/dummy_certificate.key
+        dest: /etc/nginx/ssl/example.com/server.key
+        mode: 0644
+
+    - name: "Test enabled site"
+      include_role:
+        name: "geidelguerra.laravel_nginx_site"
+      vars:
+        site_domain: 'example.com'
+        site_root: /srv/example.com
+        site_enabled: yes
+        site_ssl_certificate: /etc/nginx/ssl/example.com/server.crt
+        site_ssl_certificate_key: /etc/nginx/ssl/example.com/server.key
+
+    - name: "Test disable site"
+      include_role:
+        name: "geidelguerra.laravel_nginx_site"
+      vars:
+        site_domain: 'example.com'
+        site_root: /srv/example.com
+        site_enabled: no

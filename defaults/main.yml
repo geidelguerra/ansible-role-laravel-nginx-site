@@ -1,0 +1,4 @@
+---
+# defaults file for laravel_nginx_site
+php_version: 7.4
+site_enabled: yes

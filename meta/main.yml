@@ -1,0 +1,19 @@
+galaxy_info:
+  role_name: laravel_nginx_site
+  namespace: geidelguerra
+  author: Geidel Guerra
+  description: Setup a Laravel site
+
+  license: MIT
+
+  min_ansible_version: 2.9
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - 20.04
+
+  galaxy_tags:
+    - laravel
+
+dependencies: []

@@ -1,0 +1,6 @@
+---
+# handlers file for laravel_nginx_site
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded
